@@ -1,0 +1,11 @@
+spring:
+  profiles: default
+  jpa.database: POSTGRESQL
+  datasource.platform: postgres
+  datasource.url: jdbc:postgresql://localhost:5432/library
+  datasource.username: postgres
+  datasource.password: root
+  jpa.show-sql: true
+  jpa.generate-ddl: true
+  jpa.hibernate.ddl-auto: update
+  jpa.properties.hibernate.jdbc.lob.non_contextual_creation: true
