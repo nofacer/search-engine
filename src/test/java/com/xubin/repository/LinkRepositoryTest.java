@@ -1,6 +1,7 @@
 package com.xubin.repository;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.xubin.po.Link;
 import java.util.Optional;
@@ -27,7 +28,6 @@ class LinkRepositoryTest {
 
   @BeforeEach
   public void setUp() {
-    System.out.println("667666666");
     Link link = Link.builder().fromId((long) 1).toId((long) 2).build();
     testEntityManager.persist(link);
   }
@@ -39,10 +39,52 @@ class LinkRepositoryTest {
 
   @Test
   void shouldFindById() {
-    long targetLinkId =  1;
-    Link link = linkRepository.getOne(targetLinkId);
-    System.out.println("=================");
-    System.out.println(link);
-    assertThat(Optional.ofNullable(link));
+    long targetLinkId = 1;
+    Optional link = linkRepository.findById(targetLinkId);
+    assertTrue(link.isPresent());
+  }
+
+  @Test
+  void shouldNotFindIfNotExisting() {
+    long targetLinkId = 2;
+    Optional link = linkRepository.findById(targetLinkId);
+    assertFalse(link.isPresent());
+  }
+
+  @Test
+  void shouldFindByFromId() {
+    long targetFromLinkId = 1;
+    Optional link = linkRepository.findByFromId(targetFromLinkId);
+    assertTrue(link.isPresent());
+  }
+
+  @Test
+  void shouldNotFindByFromIdIfNotExisting() {
+    long targetFromLinkId = 2;
+    Optional link = linkRepository.findByFromId(targetFromLinkId);
+    assertFalse(link.isPresent());
+  }
+
+  @Test
+  void shouldFindByToId() {
+    long targetToLinkId = 2;
+    Optional link = linkRepository.findByToId(targetToLinkId);
+    assertTrue(link.isPresent());
+  }
+
+  @Test
+  void shouldNotFindByToIdIfNotExisting() {
+    long targetToLinkId = 1;
+    Optional link = linkRepository.findByToId(targetToLinkId);
+    assertFalse(link.isPresent());
+  }
+
+  @Test
+  void shouldSaveLink() {
+    Link newLink = Link.builder().fromId((long) 3).toId((long) 4).build();
+    linkRepository.save(newLink);
+    Optional newAddedLink = linkRepository.findByFromId((long) 3);
+    assertTrue(newAddedLink.isPresent());
+
   }
 }
