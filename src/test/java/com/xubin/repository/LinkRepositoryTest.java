@@ -40,42 +40,42 @@ class LinkRepositoryTest {
   @Test
   void shouldFindById() {
     long targetLinkId = 1;
-    Optional link = linkRepository.findById(targetLinkId);
+    Optional<Link> link = linkRepository.findById(targetLinkId);
     assertTrue(link.isPresent());
   }
 
   @Test
   void shouldNotFindIfNotExisting() {
     long targetLinkId = 2;
-    Optional link = linkRepository.findById(targetLinkId);
+    Optional<Link> link = linkRepository.findById(targetLinkId);
     assertFalse(link.isPresent());
   }
 
   @Test
   void shouldFindByFromId() {
     long targetFromLinkId = 1;
-    Optional link = linkRepository.findByFromId(targetFromLinkId);
+    Optional<Link> link = linkRepository.findByFromId(targetFromLinkId);
     assertTrue(link.isPresent());
   }
 
   @Test
   void shouldNotFindByFromIdIfNotExisting() {
     long targetFromLinkId = 2;
-    Optional link = linkRepository.findByFromId(targetFromLinkId);
+    Optional<Link> link = linkRepository.findByFromId(targetFromLinkId);
     assertFalse(link.isPresent());
   }
 
   @Test
   void shouldFindByToId() {
     long targetToLinkId = 2;
-    Optional link = linkRepository.findByToId(targetToLinkId);
+    Optional<Link> link = linkRepository.findByToId(targetToLinkId);
     assertTrue(link.isPresent());
   }
 
   @Test
   void shouldNotFindByToIdIfNotExisting() {
     long targetToLinkId = 1;
-    Optional link = linkRepository.findByToId(targetToLinkId);
+    Optional<Link> link = linkRepository.findByToId(targetToLinkId);
     assertFalse(link.isPresent());
   }
 
@@ -83,7 +83,7 @@ class LinkRepositoryTest {
   void shouldSaveLink() {
     Link newLink = Link.builder().fromId((long) 3).toId((long) 4).build();
     linkRepository.save(newLink);
-    Optional newAddedLink = linkRepository.findByFromId((long) 3);
+    Optional<Link> newAddedLink = linkRepository.findByFromId((long) 3);
     assertTrue(newAddedLink.isPresent());
 
   }
