@@ -1,7 +1,5 @@
 package com.xubin.service;
 
-import static org.jsoup.Jsoup.parse;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -32,14 +30,5 @@ class PageServiceTest {
   void shouldReturnNullIfFailToGetPageContent() {
     Document document = pageService.getPageContent("$%^&");
     assertNull(document);
-  }
-
-  @Test
-  void shouldGetPageText() {
-    String html = "<html><head><title>First parse</title></head>"
-        + "<body><p>Parsed HTML into a doc. </p></body></html>";
-    Document doc = parse(html);
-    String pageText = pageService.getPageText(doc);
-    assertEquals("First parse Parsed HTML into a doc.", pageText);
   }
 }

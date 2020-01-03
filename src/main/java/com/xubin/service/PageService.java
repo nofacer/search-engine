@@ -20,9 +20,4 @@ public class PageService {
     }
     return document;
   }
-
-  public String getPageText(Document document) {
-    return document.text();
-  }
-
 }
