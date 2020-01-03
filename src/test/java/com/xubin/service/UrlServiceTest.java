@@ -60,7 +60,7 @@ class UrlServiceTest {
     );
     given(urlRepository.findByUrl("www.url.com")).willReturn(expectedUrl);
 
-    long entryId = urlService.getEntryId("www.url.com");
+    long entryId = urlService.getUrlId("www.url.com");
 
     assertEquals((long) 1, entryId);
   }
@@ -72,7 +72,7 @@ class UrlServiceTest {
     Url savedUrl = Url.builder().id((long) 2).url("www.url.com").build();
     given(urlRepository.save(newUrl)).willReturn(savedUrl);
 
-    long entryId = urlService.getEntryId("www.url.com");
+    long entryId = urlService.getUrlId("www.url.com");
 
     assertEquals((long) 2, entryId);
   }

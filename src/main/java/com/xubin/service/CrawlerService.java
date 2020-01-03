@@ -28,7 +28,7 @@ public class CrawlerService {
 
   private boolean isIndexed(String url) {
     if (urlService.ifUrlExist(url)) {
-      long urlId = urlService.getEntryId(url);
+      long urlId = urlService.getUrlId(url);
       return wordLocationService.ifUrlExist(urlId);
     }
     return false;

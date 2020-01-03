@@ -18,7 +18,7 @@ public class UrlService {
     return fetchedUrl.isPresent();
   }
 
-  public long getEntryId(String url) {
+  public long getUrlId(String url) {
     Optional<Url> fetchedUrl = urlRepository.findByUrl(url);
     if (fetchedUrl.isPresent()) {
       return fetchedUrl.get().getId();
