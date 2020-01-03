@@ -37,4 +37,5 @@ dependencies {
   compileOnly 'org.projectlombok:lombok'
   runtimeOnly 'org.postgresql:postgresql'
   testCompile group: 'com.h2database', name: 'h2', version: '1.4.200'
+  compile group: 'org.jsoup', name: 'jsoup', version: '1.12.1'
 }
