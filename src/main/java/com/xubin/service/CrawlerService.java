@@ -1,5 +1,6 @@
 package com.xubin.service;
 
+import com.xubin.po.Link;
 import com.xubin.repository.LinkRepository;
 import com.xubin.repository.UrlRepository;
 import java.util.ArrayList;
@@ -8,6 +9,8 @@ import java.util.List;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +26,8 @@ public class CrawlerService {
   private final WordLocationService wordLocationService;
   private final PageService pageService;
   private final WordService wordService;
+  private final LinkService linkService;
+  private final LinkWordsService linkWordsService;
 
   private List<String> pages;
   private int depth;
@@ -49,8 +54,41 @@ public class CrawlerService {
           continue;
         }
         indexSinglePage(page, document);
-      }
 
+        Elements linksInPage = document.getElementsByTag("a");
+        for (Element link : linksInPage) {
+          String linkHref = link.attr("href");
+          if (!linkHref.equals("")) {
+            String fullUrl = page + linkHref;
+            if (fullUrl.startsWith("http") && !urlService.ifUrlExist(fullUrl)) {
+              newPages.add(fullUrl);
+            }
+            String linkText = link.text();
+            indexBetweenTwoPages(page, fullUrl, linkText);
+          }
+        }
+        this.pages = newPages;
+      }
+    }
+  }
+
+  private void indexBetweenTwoPages(String fromUrl, String toUrl, String linkText) {
+    long fromId = urlService.getUrlId(fromUrl);
+    long toId = urlService.getUrlId(toUrl);
+    if (fromId == toId) {
+      return;
+    }
+
+    Link newLink = linkService.saveLink(fromId, toId);
+    long newLinkId = newLink.getId();
+
+    List<String> words = pageService.separateWords(linkText);
+    for (String word : words) {
+      if (ignoreWords.contains(word)) {
+        continue;
+      }
+      long wordId = wordService.getWordId(word);
+      linkWordsService.saveLinkWords(newLinkId, wordId);
     }
   }
 
