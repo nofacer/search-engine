@@ -1,5 +1,6 @@
 package com.xubin.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
@@ -51,5 +52,17 @@ class WordLocationServiceTest {
     boolean isExist = wordLocationService.ifUrlExist(1);
 
     assertFalse(isExist);
+  }
+
+  @Test
+  void shouldSaveNewWordLocation() {
+    WordLocation newWordLocation = WordLocation.builder().wordId((long) 1).urlId((long) 1)
+        .location(2).build();
+    WordLocation savedWordLocation = WordLocation.builder().id((long) 1).wordId((long) 1)
+        .urlId((long) 1).location(2).build();
+    given(wordLocationRepository.save(newWordLocation)).willReturn(savedWordLocation);
+
+    WordLocation actualWordLocation = wordLocationService.save(1, 1, 2);
+    assertEquals(savedWordLocation, actualWordLocation);
   }
 }

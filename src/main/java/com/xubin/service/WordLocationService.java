@@ -17,4 +17,10 @@ public class WordLocationService {
     Optional<WordLocation> fetchedUrl = wordLocationRepository.findByUrlId(urlId);
     return fetchedUrl.isPresent();
   }
+
+  public WordLocation save(long urlId, long wordId, int location) {
+    WordLocation wordLocation = WordLocation.builder().urlId(urlId).wordId(wordId)
+        .location(location).build();
+    return wordLocationRepository.save(wordLocation);
+  }
 }
