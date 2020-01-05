@@ -3,8 +3,8 @@ package com.xubin.service;
 import com.xubin.po.Link;
 import com.xubin.repository.LinkRepository;
 import com.xubin.repository.UrlRepository;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,7 +47,7 @@ public class CrawlerService {
     return false;
   }
 
-  public void crawl(List<String> pages, int depth) throws URISyntaxException {
+  public void crawl(List<String> pages, int depth) throws MalformedURLException {
     for (int i = 0; i < depth; i++) {
       List<String> newPages = new ArrayList<>();
       for (String page : pages) {
@@ -61,12 +61,14 @@ public class CrawlerService {
         for (Element link : linksInPage) {
           String linkHref = link.attr("href");
           if (!linkHref.equals("")) {
-            String fullUrl = urlJoin(page, linkHref);
-            if (fullUrl.startsWith("http") && !urlService.ifUrlExist(fullUrl)) {
-              newPages.add(fullUrl);
+            if (page.trim().startsWith("http")) {
+              String fullUrl = urlJoin(page, linkHref);
+              if (!urlService.ifUrlExist(fullUrl)) {
+                newPages.add(fullUrl);
+              }
+              String linkText = link.text();
+              indexBetweenTwoPages(page, fullUrl, linkText);
             }
-            String linkText = link.text();
-            indexBetweenTwoPages(page, fullUrl, linkText);
           }
         }
         pages = newPages;
@@ -121,14 +123,16 @@ public class CrawlerService {
     return pageService.separateWords(pageText);
   }
 
-  private String urlJoin(String hostUrl, String subUrl) throws URISyntaxException {
+  private String urlJoin(String hostUrl, String subUrl)
+      throws MalformedURLException {
+    subUrl = subUrl.trim();
+    hostUrl = hostUrl.trim();
     if (subUrl.startsWith("#") || subUrl.startsWith("http")) {
       subUrl = "/"; //Prevent array out of bounding
     } else {
       subUrl = subUrl.split("#")[0];
     }
-    URI uri = new URI(hostUrl);
-    return uri.resolve(subUrl).toString();
+    return new URL(new URL(hostUrl), subUrl).toString();
   }
 }
 

@@ -1,7 +1,7 @@
 package com.xubin.controller;
 
 import com.xubin.service.CrawlerService;
-import java.net.URISyntaxException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +21,7 @@ public class CrawlerController {
   @RequestMapping(value = "/crawl", method = RequestMethod.POST)
   public String hello(@RequestHeader(value = "start_page") String startPage,
       @RequestHeader(value = "depth") int depth)
-      throws URISyntaxException {
+      throws MalformedURLException {
     List<String> pages = new ArrayList<>(Arrays.asList(startPage));
     crawlerService.crawl(pages, depth);
     return "Finished";
