@@ -3,6 +3,8 @@ package com.xubin.service;
 import com.xubin.po.Link;
 import com.xubin.repository.LinkRepository;
 import com.xubin.repository.UrlRepository;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,8 +31,6 @@ public class CrawlerService {
   private final LinkService linkService;
   private final LinkWordsService linkWordsService;
 
-  private List<String> pages;
-  private int depth;
 
   private List<String> ignoreWords = new ArrayList<>(
       Arrays.asList("the", "of", "to", "and", "a", "in", "is", "it")
@@ -45,10 +45,10 @@ public class CrawlerService {
     return false;
   }
 
-  public void crawl() {
-    for (int i = 0; i < this.depth; i++) {
+  public void crawl(List<String> pages, int depth) throws URISyntaxException {
+    for (int i = 0; i < depth; i++) {
       List<String> newPages = new ArrayList<>();
-      for (String page : this.pages) {
+      for (String page : pages) {
         Document document = pageService.getPageContent(page);
         if (document == null) {
           continue;
@@ -59,7 +59,7 @@ public class CrawlerService {
         for (Element link : linksInPage) {
           String linkHref = link.attr("href");
           if (!linkHref.equals("")) {
-            String fullUrl = page + linkHref;
+            String fullUrl = urlJoin(page, linkHref);
             if (fullUrl.startsWith("http") && !urlService.ifUrlExist(fullUrl)) {
               newPages.add(fullUrl);
             }
@@ -67,7 +67,7 @@ public class CrawlerService {
             indexBetweenTwoPages(page, fullUrl, linkText);
           }
         }
-        this.pages = newPages;
+        pages = newPages;
       }
     }
   }
@@ -119,5 +119,9 @@ public class CrawlerService {
     return pageService.separateWords(pageText);
   }
 
+  private String urlJoin(String hostUrl, String subUrl) throws URISyntaxException {
+    URI uri = new URI(hostUrl);
+    return uri.resolve(subUrl).toString();
+  }
 }
 
