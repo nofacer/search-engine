@@ -10,7 +10,7 @@ public interface WordLocationRepository extends JpaRepository<WordLocation, Long
 
   Optional<WordLocation> findById(Long id);
 
-  Optional<WordLocation> findByUrlId(Long id);
+  Optional<WordLocation> findTopByUrlId(Long id);
 
   Optional<WordLocation> findByWordId(Long id);
 }

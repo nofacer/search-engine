@@ -14,7 +14,7 @@ public class WordLocationService {
   private final WordLocationRepository wordLocationRepository;
 
   public boolean ifUrlExist(long urlId) {
-    Optional<WordLocation> fetchedUrl = wordLocationRepository.findByUrlId(urlId);
+    Optional<WordLocation> fetchedUrl = wordLocationRepository.findTopByUrlId(urlId);
     return fetchedUrl.isPresent();
   }
 

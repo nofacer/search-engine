@@ -28,8 +28,8 @@ class WordLocationRepositoryTest {
 
   @BeforeEach
   public void setUp() {
-    WordLocation wordlocation = WordLocation.builder().wordId((long) 1).urlId((long) 2).build();
-    testEntityManager.persist(wordlocation);
+    WordLocation wordLocation = WordLocation.builder().wordId((long) 1).urlId((long) 2).build();
+    testEntityManager.persist(wordLocation);
   }
 
   @AfterEach
@@ -68,14 +68,14 @@ class WordLocationRepositoryTest {
   @Test
   void shouldFindByToId() {
     long targetUrlId = 2;
-    Optional wordlocation = wordLocationRepository.findByUrlId(targetUrlId);
+    Optional wordlocation = wordLocationRepository.findTopByUrlId(targetUrlId);
     assertTrue(wordlocation.isPresent());
   }
 
   @Test
   void shouldNotFindByToIdIfNotExisting() {
     long targetUrlId = 1;
-    Optional wordlocation = wordLocationRepository.findByUrlId(targetUrlId);
+    Optional wordlocation = wordLocationRepository.findTopByUrlId(targetUrlId);
     assertFalse(wordlocation.isPresent());
   }
 

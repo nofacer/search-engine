@@ -38,7 +38,7 @@ class WordLocationServiceTest {
   void shouldReturnTrueIfUrlExists() {
     Optional<WordLocation> expectedUrl = Optional
         .ofNullable(WordLocation.builder().urlId((long) 1).wordId((long) 2).build());
-    given(wordLocationRepository.findByUrlId((long) 1)).willReturn(expectedUrl);
+    given(wordLocationRepository.findTopByUrlId((long) 1)).willReturn(expectedUrl);
 
     boolean isExist = wordLocationService.ifUrlExist(1);
 
@@ -47,7 +47,7 @@ class WordLocationServiceTest {
 
   @Test
   void shouldReturnFalseIfUrlNotExists() {
-    given(wordLocationRepository.findByUrlId((long) 1)).willReturn(Optional.empty());
+    given(wordLocationRepository.findTopByUrlId((long) 1)).willReturn(Optional.empty());
 
     boolean isExist = wordLocationService.ifUrlExist(1);
 
