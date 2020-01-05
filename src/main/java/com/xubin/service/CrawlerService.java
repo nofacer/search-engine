@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Data
+@Log4j2
 @RequiredArgsConstructor(onConstructor = @__({@Autowired}))
 public class CrawlerService {
 
@@ -96,7 +98,7 @@ public class CrawlerService {
     if (isIndexed(url)) {
       return;
     }
-    System.out.println("Indexing" + url);
+    log.info("Indexing: " + url);
     List<String> words = getPageWords(document);
     bindWordsToUrl(url, words);
   }
