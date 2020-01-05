@@ -2,7 +2,7 @@ spring:
   profiles: default
   jpa.database: POSTGRESQL
   datasource.platform: postgres
-  datasource.url: jdbc:postgresql://localhost:5432/library
+  datasource.url: jdbc:postgresql://localhost:5432/searchengine
   datasource.username: postgres
   datasource.password: root
   jpa.show-sql: true
