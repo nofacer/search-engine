@@ -5,7 +5,7 @@ spring:
   datasource.url: jdbc:postgresql://localhost:5432/searchengine
   datasource.username: postgres
   datasource.password: root
-  jpa.show-sql: true
+  jpa.show-sql: false
   jpa.generate-ddl: true
   jpa.hibernate.ddl-auto: update
   jpa.properties.hibernate.jdbc.lob.non_contextual_creation: true
