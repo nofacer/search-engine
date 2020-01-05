@@ -122,6 +122,11 @@ public class CrawlerService {
   }
 
   private String urlJoin(String hostUrl, String subUrl) throws URISyntaxException {
+    if (subUrl.startsWith("#") || subUrl.startsWith("http")) {
+      subUrl = "/"; //Prevent array out of bounding
+    } else {
+      subUrl = subUrl.split("#")[0];
+    }
     URI uri = new URI(hostUrl);
     return uri.resolve(subUrl).toString();
   }
