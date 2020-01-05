@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 public class WordLocation {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   private Long urlId;

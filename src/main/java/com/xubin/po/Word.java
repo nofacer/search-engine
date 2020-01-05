@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "word_list")
 public class Word {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   private String word;

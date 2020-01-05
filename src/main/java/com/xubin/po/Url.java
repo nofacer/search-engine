@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "url_list")
 public class Url {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   private String url;
