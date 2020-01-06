@@ -132,7 +132,13 @@ public class CrawlerService {
     } else {
       subUrl = subUrl.split("#")[0];
     }
-    return new URL(new URL(hostUrl), subUrl).toString();
+    String fullString;
+    try {
+      fullString = new URL(new URL(hostUrl), subUrl).toString();
+    } catch (Exception e) {
+      fullString = hostUrl;
+    }
+    return fullString;
   }
 }
 
