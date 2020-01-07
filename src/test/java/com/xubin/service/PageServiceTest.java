@@ -14,8 +14,6 @@ import org.junit.jupiter.api.Test;
 
 class PageServiceTest {
 
-  private PageService pageService = new PageService();
-
   @BeforeEach
   void setUp() {
   }
@@ -26,20 +24,20 @@ class PageServiceTest {
 
   @Test
   void shouldGetPageContent() {
-    Document document = pageService.getPageContent("http://www.baidu.com");
+    Document document = PageService.getPageContent("http://www.baidu.com");
     assertNotNull(document);
   }
 
   @Test
   void shouldReturnNullIfFailToGetPageContent() {
-    Document document = pageService.getPageContent("$%^&");
+    Document document = PageService.getPageContent("$%^&");
     assertNull(document);
   }
 
   @Test
   void shouldSplitWords() {
     String text = "Hello&world hello everyone  ";
-    List<String> words = pageService.separateWords(text);
+    List<String> words = PageService.separateWords(text);
     System.out.println(words);
     List<String> expectedWords = new ArrayList<>(
         Arrays.asList("hello", "world", "hello", "everyone"));

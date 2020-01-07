@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor(onConstructor = @__({@Autowired}))
 public class PageService {
 
-  public Document getPageContent(String url) {
+  public static Document getPageContent(String url) {
     Document document = null;
     try {
       document = Jsoup.connect(url).get();
@@ -25,7 +25,7 @@ public class PageService {
     return document;
   }
 
-  public List<String> separateWords(String text) {
+  public static List<String> separateWords(String text) {
     List<String> words = new ArrayList<>();
     for (String word : text.split("\\W")) {
       if (!word.equals("")) {
