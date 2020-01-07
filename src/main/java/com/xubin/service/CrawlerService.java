@@ -1,5 +1,7 @@
 package com.xubin.service;
 
+import static com.xubin.service.UrlService.mergeUrl;
+
 import com.xubin.po.Link;
 import com.xubin.repository.LinkRepository;
 import com.xubin.repository.UrlRepository;
@@ -62,7 +64,7 @@ public class CrawlerService {
           String linkHref = link.attr("href");
           if (!linkHref.equals("")) {
             if (page.trim().startsWith("http")) {
-              String fullUrl = urlJoin(page, linkHref);
+              String fullUrl = mergeUrl(page, linkHref);
               if (!urlService.ifUrlExist(fullUrl)) {
                 newPages.add(fullUrl);
               }
@@ -121,24 +123,6 @@ public class CrawlerService {
   private List<String> getPageWords(Document document) {
     String pageText = document.text();
     return pageService.separateWords(pageText);
-  }
-
-  private String urlJoin(String hostUrl, String subUrl)
-      throws MalformedURLException {
-    subUrl = subUrl.trim();
-    hostUrl = hostUrl.trim();
-    if (subUrl.startsWith("#") || subUrl.startsWith("http")) {
-      subUrl = "/"; //Prevent array out of bounding
-    } else {
-      subUrl = subUrl.split("#")[0];
-    }
-    String fullString;
-    try {
-      fullString = new URL(new URL(hostUrl), subUrl).toString();
-    } catch (Exception e) {
-      fullString = hostUrl;
-    }
-    return fullString;
   }
 }
 
