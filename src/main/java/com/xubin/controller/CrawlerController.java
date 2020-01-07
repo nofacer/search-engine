@@ -1,9 +1,9 @@
 package com.xubin.controller;
 
+import com.xubin.bo.LinkInfo;
 import com.xubin.service.CrawlerService;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +22,9 @@ public class CrawlerController {
   public String hello(@RequestHeader(value = "start_page") String startPage,
       @RequestHeader(value = "depth") int depth)
       throws MalformedURLException {
-    List<String> pages = new ArrayList<>(Arrays.asList(startPage));
-    crawlerService.crawl(pages, depth);
+    List<LinkInfo> linkInfos = new ArrayList<>();
+    linkInfos.add(LinkInfo.builder().url(startPage).build());
+    crawlerService.crawl(linkInfos, depth);
     return "Finished";
   }
 
