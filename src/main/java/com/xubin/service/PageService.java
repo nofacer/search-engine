@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@Log4j2
 @RequiredArgsConstructor(onConstructor = @__({@Autowired}))
 public class PageService {
 
@@ -18,7 +20,7 @@ public class PageService {
     try {
       document = Jsoup.connect(url).get();
     } catch (IllegalArgumentException | IOException e) {
-      System.out.println("Failed to open " + url);
+      log.error("Failed to open:" + url);
     }
     return document;
   }
