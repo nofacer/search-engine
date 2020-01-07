@@ -1,5 +1,6 @@
 package com.xubin.service;
 
+import static com.xubin.service.UrlService.mergeUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -7,6 +8,7 @@ import static org.mockito.BDDMockito.given;
 
 import com.xubin.po.Url;
 import com.xubin.repository.UrlRepository;
+import java.net.MalformedURLException;
 import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -75,5 +77,38 @@ class UrlServiceTest {
     long entryId = urlService.getUrlId("www.url.com");
 
     assertEquals((long) 2, entryId);
+  }
+
+  @Test
+  void shouldOnlyReturnHostUrlIfSubUrlContainsProtocol() throws MalformedURLException {
+    String hostUrl = "http://www.a.com";
+    String subUrl = "javascript://a.js";
+
+    String expectedResult = "http://www.a.com";
+    String actualResult = mergeUrl(hostUrl, subUrl);
+
+    assertEquals(expectedResult, actualResult);
+  }
+
+  @Test
+  void shouldAvoidPositionInfoInSubUrl() throws MalformedURLException {
+    String hostUrl = "http://www.a.com";
+    String subUrl = "/one#two";
+
+    String expectedResult = "http://www.a.com/one";
+    String actualResult = mergeUrl(hostUrl, subUrl);
+
+    assertEquals(expectedResult, actualResult);
+  }
+
+  @Test
+  void shouldOnlyReturnHostUrlIfSubUrlIsOnlyPositionTag() throws MalformedURLException {
+    String hostUrl = "http://www.a.com";
+    String subUrl = "#";
+
+    String expectedResult = "http://www.a.com";
+    String actualResult = mergeUrl(hostUrl, subUrl);
+
+    assertEquals(expectedResult, actualResult);
   }
 }
