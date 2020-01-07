@@ -16,10 +16,7 @@ public class UrlService {
   private final UrlRepository urlRepository;
 
   public static String mergeUrl(String hostUrl, String subUrl) throws MalformedURLException {
-    if (subUrl.contains(":")) {
-      return hostUrl;
-    }
-    if (subUrl.equals("#")) {
+    if (subUrl.contains(":") || subUrl.equals("#")) {
       return hostUrl;
     }
     if (subUrl.contains("#")) {
