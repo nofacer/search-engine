@@ -40,7 +40,7 @@ public class CrawlerService {
   public void crawl(List<LinkInfo> linkInfos, int depth) {
     for (int i = 0; i < depth; i++) {
       for (LinkInfo linkInfo : linkInfos) {
-        PageInfo pageInfo = PageInfo.builder().url(linkInfo.url).build();
+        PageInfo pageInfo = PageInfo.builder().url(cleanHostURL(linkInfo.url)).build();
         parse(pageInfo);
         linkInfos = pageInfo.linkInfos;
       }
@@ -147,6 +147,13 @@ public class CrawlerService {
         linkWordsService.saveLinkWords(linkInfo.linkId, wordId);
       }
     }
+  }
+
+  private String cleanHostURL(String url) {
+    if (url.endsWith("/")) {
+      return url.substring(0, url.length() - 2);
+    }
+    return url;
   }
 
 }
