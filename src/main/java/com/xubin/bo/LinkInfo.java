@@ -10,4 +10,5 @@ public class LinkInfo {
 
   public String url;
   public List<String> linkWords;
+  public long linkId;
 }

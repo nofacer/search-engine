@@ -60,6 +60,8 @@ public class CrawlerService {
     indexWordsLocation(pageInfo);
     log.info("Indexing between origin page and target page");
     indexLinkRelation(pageInfo);
+    log.info("Indexing between link and words");
+    indexWordsInLinkRelation(pageInfo);
   }
 
 
@@ -123,22 +125,29 @@ public class CrawlerService {
       long fromId = pageInfo.urlId;
       long toId = urlService.getUrlId(linkInfo.url);
       if (fromId == toId) {
+        linkInfo.linkId = -1;
         return;
       }
 
       Link newLink = linkService.saveLink(fromId, toId);
-      long newLinkId = newLink.getId();
+      linkInfo.linkId = newLink.getId();
+    }
+  }
 
+  private void indexWordsInLinkRelation(PageInfo pageInfo) {
+    for (LinkInfo linkInfo : pageInfo.linkInfos) {
+      if (linkInfo.linkId == -1) {
+        continue;
+      }
       for (String word : linkInfo.linkWords) {
         if (ignoreWords.contains(word)) {
           continue;
         }
         long wordId = wordService.getWordId(word);
-        linkWordsService.saveLinkWords(newLinkId, wordId);
+        linkWordsService.saveLinkWords(linkInfo.linkId, wordId);
       }
     }
   }
-
 
 }
 
