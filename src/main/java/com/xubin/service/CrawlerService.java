@@ -11,6 +11,7 @@ import com.xubin.repository.LinkRepository;
 import com.xubin.repository.UrlRepository;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,7 @@ public class CrawlerService {
   private final LinkService linkService;
   private final LinkWordsService linkWordsService;
 
+  private List<String> alreadyIndexedUrls = new ArrayList<>();
 
   public void crawl(List<LinkInfo> linkInfos, int depth) {
     for (int i = 0; i < depth; i++) {
@@ -48,11 +50,15 @@ public class CrawlerService {
   }
 
   public void parse(PageInfo pageInfo) {
+    if (alreadyIndexedUrls.contains(pageInfo.url)) {
+      return;
+    }
     if (isIndexed(pageInfo) || !isValidPage(pageInfo)) {
       log.info("Ignore this page:" + pageInfo.url);
       return;
     }
     log.info("Parsing page:" + pageInfo.url);
+    alreadyIndexedUrls.add(pageInfo.url);
     getPageWords(pageInfo);
     getLinkInfos(pageInfo);
     getUrlId(pageInfo);
