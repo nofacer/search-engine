@@ -51,11 +51,9 @@ public class CrawlerService {
 
   public void parse(PageInfo pageInfo) {
     if (alreadyIndexedUrls.contains(pageInfo.url)) {
-      log.info("Ignore this page:" + pageInfo.url);
       return;
     }
     if (isIndexed(pageInfo) || !isValidPage(pageInfo)) {
-      log.info("Ignore this page:" + pageInfo.url);
       return;
     }
     log.info("Parsing page:" + pageInfo.url);
